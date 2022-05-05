@@ -44,3 +44,59 @@ themeSwitcher.addEventListener("click", () => {
     disabledDarkMode();
   }
 });
+
+/*==================== Menu toggle - Active states ====================*/
+
+const toggleMenu = document.querySelector(".icon-menu");
+const nav = document.querySelector(".nav");
+const navList = document.querySelector(".nav-list");
+const navListLinks = Array.from(document.querySelectorAll(".nav-list__link"));
+const loginContainer = document.querySelector(".login-container");
+const loginText = document.querySelector(".header__login");
+
+toggleMenu.addEventListener("click", () => {
+  toggleMenu.classList.toggle("active");
+  nav.classList.toggle("active");
+  navList.classList.toggle("active");
+  loginContainer.classList.toggle("active");
+  loginText.classList.toggle("active");
+
+  navListLinks.forEach((navLink) => {
+    navLink.classList.toggle("active");
+  });
+});
+
+/*==================== Scroll Effects ====================*/
+
+const scrollOffset = 100;
+
+let scrollElement = document.querySelector(".scroll-element");
+
+const elementInView = (el, offset = 0) => {
+  const elementTop = el.getBoundingClientRect().top;
+
+  return (
+    elementTop <=
+    (window.innerHeight || document.documentElement.clientHeight) - offset
+  );
+};
+
+const displayScrollElement = () => {
+  scrollElement.classList.add("scrolled");
+};
+
+const hideScrollElement = () => {
+  scrollElement.classList.remove("scrolled");
+};
+
+const handleScrollAnimation = () => {
+  if (elementInView(scrollElement, scrollOffset)) {
+    displayScrollElement();
+  } else {
+    hideScrollElement();
+  }
+};
+
+window.addEventListener("scroll", () => {
+  handleScrollAnimation();
+});

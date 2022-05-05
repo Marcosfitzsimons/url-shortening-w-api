@@ -6,7 +6,9 @@
   /* Primary */
 
   --Cyan: hsl(180, 66%, 49%);
+  --cyanHover: hsl(180, 66%, 69%);
   --DarkViolet: hsl(257, 27%, 26%);
+  --DarkVioletHover: hsl(257, 27%, 26%);
   
   /* Secundary */
   
@@ -34,6 +36,7 @@
   --firstBackground: hsl(230, 17%, 14%);
   --secondBackground: hsl(228, 28%, 20%);
   --textColor: hsl(0, 0%, 98%);
+  --DarkVioletHover: hsl(257, 7%, 84%);
 }
 
 html {
@@ -126,6 +129,11 @@ p {
   cursor: pointer;
   font-size: 1.9rem;
   padding: 1.3rem 2.2rem;
+  transition: .2s;
+}
+
+.btn:hover {
+  background-color: var(--cyanHover);
 }
 
 /* ==============
@@ -222,6 +230,7 @@ p {
   cursor: pointer;
   position: relative;
   top: .5rem;
+  transition: .3s;
 }
 
 .header-right-container {
@@ -274,6 +283,59 @@ p {
   align-self: center;
 }
 
+@media (max-width: 530px) {
+  .nav.active {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    background-color: var(--DarkViolet);
+    top: 8.5rem;
+    height: 50vh;
+    text-align: center;
+    border-radius: 1rem;
+    padding-top: 1rem;
+  }
+  .nav-list.active {
+    display: flex;
+    flex-direction: column;
+    font-size: 2.2rem;
+    gap: 2.5rem;
+  }
+  .nav-list__link.active {
+    color: var(--white);
+    font-weight: 600;
+  }
+  .login-container.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    position: absolute;
+    top: 37%;
+    right: 27%;
+    border-top: 1px solid var(--secondBackground);
+    font-size: 2.2rem;
+    padding-top: 2rem;
+  }
+  .header__login.active {
+    color: var(--white);
+    font-weight: 600;
+  }
+  .icon-menu.active {
+    background-image: url(../images/close-line.svg);
+    width: 5rem;
+    aspect-ratio: 1;
+    left: .5rem;
+  }
+}
+
+@media (min-width: 427px) and (max-width: 533px) {
+  .login-container.active {
+    right: 30%;
+  }
+}
 
 /* ==============
     Main
@@ -333,6 +395,11 @@ p {
   font-size: 1.5rem;
   font-family: var(--ff);
   font-weight: 500;
+}
+
+#url-input:focus {
+  border: 3px solid var(--red);
+  outline: none;
 }
 
 .url-submit__btn, .copy-button {
@@ -504,6 +571,7 @@ p {
 
 .footer-article__link {
   color: var(--grayishViolet);
+  transition: .3s;
 }
 
 .footer-article {
@@ -527,6 +595,18 @@ p {
   top: .3rem;
 }
 
+.footer-article__link:hover {
+  color: var(--Cyan);
+}
+
+.footer-icon {
+  transition: .25s;
+}
+
+.footer-icon:hover {
+  transform: translateY(-.8rem);
+}
+
 /* ==============
     Attribution
 ============== */
@@ -543,6 +623,12 @@ p {
   font-style: italic;
   color: var(--Cyan);
 }
+
+/* ==============
+    Hover Effects
+============== */
+
+
 
 /* ==============
     Media Queries
@@ -566,6 +652,7 @@ p {
     font-size: 1.4rem;
     font-weight: 600;
     color: var(--grayishViolet);
+    transition: .3s;
   }
   .header__btn {
     font-size: 1.4rem;
@@ -593,6 +680,7 @@ p {
 @media (min-width: 850px) {
   .nav {
     display: flex;
+    transition: .3s;
   }
   .header-left-container {
     display: flex;
@@ -611,6 +699,10 @@ p {
   }
   .nav-list__link {
     color: var(--grayishViolet);
+    transition: .3s;
+  }
+  .nav-list__link:hover, .header__login:hover {
+    color: var(--DarkVioletHover);
   }
   .header {
     height: 70rem;
@@ -635,7 +727,8 @@ p {
     align-items: center;
   }
   .copy-button {
-    width: 10rem;
+    width: 12rem;
+    padding: 0rem 2rem;
   }
   .link-shortened {
     width: 40%;
@@ -662,12 +755,10 @@ p {
   .header-banner {
     width: min(90%, 140rem);
     margin: 0 auto;
+    margin-top: 4rem;
   }
   .header-btn {
     align-self: start;
-  }
-  .header-banner {
-    margin-top: 4rem;
   }
   .header-banner__img {
     position: absolute;
@@ -819,5 +910,29 @@ p {
   }
   .header-banner__img {
     width: 30%
+  }
+}
+
+/* ==============
+    Scroll Effect
+============== */
+
+.scroll-element {
+  opacity: 0;
+}
+
+.scroll-element.scrolled.scrolled.fade-in-bottom {
+  animation: fade-in-bottom 1s ease-in-out both;
+  opacity: 1;
+}
+
+@keyframes fade-in-bottom {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

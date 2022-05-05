@@ -84,11 +84,12 @@
       <article class="shortening-link-container">
         <form action="" class="form">
           <div class="url-input-container">
-            <input type="url" name="url-input" id="url-input" placeholder="Sharten a link here..." required>
+            <input type="url" name="url-input" id="url-input" placeholder="Sharten a link here..." required oninvalid="this.setCustomValidity('Please add a link')"
+            oninput="this.setCustomValidity('')" />
           </div>
 
           <div class="url-submit">
-            <button class="url-submit__btn" type="submit" for="url-input">Shorten It!</button>
+            <button class="url-submit__btn btn" type="submit" for="url-input">Shorten It!</button>
           </div>
         </form>
       </article>
@@ -100,7 +101,7 @@
         <div class="link-shortened">
           <p class="link-shortened__text">url shortened</p>
         </div>
-        <button class="copy-button">Copy</button>
+        <button class="copy-button btn">Copy</button>
       </article>
 
     </section>
@@ -112,7 +113,7 @@
       <p class="advanced-statistics__text centrar-texto">Track how your links are performing across the web with our 
         advanced statistics dashboard.</p>
 
-      <div class="statistics-container">
+      <div class="statistics-container scroll-element fade-in-bottom">
 
         <article class="statistic statistic--one">
           <div class="static-icon-container">
