@@ -100,3 +100,161 @@ const handleScrollAnimation = () => {
 window.addEventListener("scroll", () => {
   handleScrollAnimation();
 });
+
+/*==================== Url Shortening ====================*/
+
+const shortlyInput = document.querySelector(".url-input");
+const shortlyBtn = document.querySelector(".url-submit__btn");
+const shortlyResult = document.querySelector(".hidden-result");
+const parentNode = document.querySelector(".shortened-link-container");
+const insertedLink = document.querySelector(".long-link__text");
+const shortCode = document.querySelector(".link-shortened__text");
+const errorMsg = document.querySelector(".error-msg");
+
+// URL Validiation
+
+function urlValidation(defaultUrl) {
+  const urlRule =
+    /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+  if (defaultUrl.match(urlRule)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// URL Submission Click Event
+
+const apiFunc = shortlyBtn.addEventListener("click", function () {
+  let inputValue = shortlyInput.value;
+
+  // URL Validation
+
+  if (!urlValidation(inputValue)) {
+    errorMsg.classList.add("shown");
+    shortlyInput.classList.add("shown");
+    errorMsg.innerHTML = "Please enter a link";
+  } else {
+    errorMsg.classList.remove("shown");
+    errorMsg.classList.add("hidden");
+    shortlyInput.classList.remove("shown");
+
+    // Passed Validation - init API
+
+    fetch(`https://api.shrtco.de/v2/shorten?url=` + inputValue)
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          let shortlyCode = response.result.code;
+          // Started Cloning
+          let mainClone = shortlyResult.cloneNode(true);
+          // mainClone.classList = "search-result";
+          mainClone.classList.replace("hidden-result", "search-result");
+
+          //Finished Cloning
+
+          //Storage
+          sessionStorage.setItem("cloneCache", parentNode.innerHTML);
+
+          //Target clone child elements
+
+          let cloneLink = mainClone.querySelector(".long-link__text");
+
+          let cloneResultLink = mainClone.querySelector(
+            ".link-shortened__text"
+          );
+          let cloneCopyBtn = mainClone.querySelector(".copy-button");
+
+          //Storage
+
+          sessionStorage.setItem("cloneCopyBtn", cloneCopyBtn.outerHTML);
+
+          //Inserting value of search input
+
+          cloneLink.textContent = `${inputValue}`;
+
+          //Storage
+
+          sessionStorage.setItem("cloneLink", cloneLink.textContent);
+
+          //Inserting the result value
+
+          cloneResultLink.textContent = `shrtco.de/${shortlyCode}`;
+
+          //Storage
+
+          sessionStorage.setItem(
+            "cloneResultLink",
+            cloneResultLink.textContent
+          );
+
+          parentNode.appendChild(mainClone);
+
+          //Link Copy Event
+
+          cloneCopyBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            //Target text
+
+            let textToCopy = cloneResultLink.textContent;
+            //  Copy Text
+
+            navigator.clipboard.writeText(textToCopy);
+
+            //Change CSS
+
+            cloneCopyBtn.textContent = "Copied!";
+            cloneCopyBtn.style.backgroundColor = "var(--DarkViolet)";
+            setTimeout(function () {
+              cloneCopyBtn.textContent = "Copy";
+              cloneCopyBtn.style.backgroundColor = "var(--Cyan)";
+            }, 1000);
+          });
+        } else {
+          console.log("error");
+        }
+      });
+  }
+});
+
+// Reload function
+
+window.onload = () => {
+  let mainClone = shortlyResult.cloneNode(true);
+  mainClone.classList.replace("hidden-result", "search-result");
+  let cloneLinkField = mainClone.querySelector(".long-link__text");
+  let cloneResultLink = mainClone.querySelector(".link-shortened__text");
+
+  //Retrieving
+
+  let originalHtml = sessionStorage.getItem("cloneCache");
+  let cloneLink = sessionStorage.getItem("cloneLink");
+  let cloneResultLinks = sessionStorage.getItem("cloneResultLink");
+
+  //Injecting
+
+  cloneLinkField.innerHTML = cloneLink;
+  cloneResultLink.textContent = cloneResultLinks;
+  parentNode.appendChild(mainClone);
+  parentNode.innerHTML = originalHtml;
+
+  //Repeating Copy Event
+
+  let cloneCopyBtn = parentNode.querySelector(".copy-button");
+  console.log(cloneCopyBtn);
+
+  cloneCopyBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    //Target text
+    let textToCopy = cloneResultLink.textContent;
+    //  Copy Text
+    navigator.clipboard.writeText(textToCopy);
+    //Change CSS
+    cloneCopyBtn.textContent = "Copied!";
+    cloneCopyBtn.style.backgroundColor = "var(--DarkViolet)";
+    setTimeout(function () {
+      cloneCopyBtn.textContent = "Copy";
+      cloneCopyBtn.style.backgroundColor = "var(--Cyan)";
+    }, 1000);
+  });
+};
