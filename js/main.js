@@ -240,8 +240,7 @@ window.onload = () => {
 
   //Repeating Copy Event
 
-  let cloneCopyBtn = parentNode.querySelector(".copy-button");
-  console.log(cloneCopyBtn);
+  let cloneCopyBtn = mainClone.querySelector(".copy-button");
 
   cloneCopyBtn.addEventListener("click", function (e) {
     e.preventDefault();
